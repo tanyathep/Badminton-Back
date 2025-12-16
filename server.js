@@ -17,17 +17,21 @@ const BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
 app.use(express.json());
 
 const allowedOrigins = [
-    'https://badmintonf2.netlify.app/', // URL Netlify/Vercel ของคุณ
+    'https://badmintonf2.netlify.app', // URL Netlify/Vercel ของคุณ
     // เพิ่ม URL อื่นๆ ที่อนุญาต เช่น 'http://localhost:8080'
 ];
 
 app.use(cors({
     origin: (origin, callback) => {
-        // อนุญาตถ้า origin อยู่ในรายการที่กำหนด หรือไม่มี origin (เช่น Postman, cURL)
-        if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost')) {
+        // --- ปรับ Logic ตรงนี้ ---
+        if (
+            !origin || // กรณีที่ไม่มี Origin (เช่น Postman)
+            origin === 'null' || // <--- เพิ่มเงื่อนไขนี้ เพื่อยอมรับ 'Origin null'
+            origin.startsWith('http://localhost') ||
+            allowedOrigins.includes(origin)
+        ) {
             callback(null, true);
         } else {
-            // *** การแก้ไขที่ 4: การจัดการ Error CORS ที่ดีขึ้น ***
             console.warn(`CORS: Origin ${origin} is not allowed.`);
             callback(new Error('Not allowed by CORS'), false);
         }
