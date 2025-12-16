@@ -17,7 +17,7 @@ const BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
 app.use(express.json());
 
 const allowedOrigins = [
-    'https://badmintonf2.netlify.app', // URL Netlify/Vercel ของคุณ
+    'https://badmintonf2.netlify.app/', // URL Netlify/Vercel ของคุณ
     // เพิ่ม URL อื่นๆ ที่อนุญาต เช่น 'http://localhost:8080'
 ];
 
